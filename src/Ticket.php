@@ -29,7 +29,7 @@ class Ticket extends Handesk {
     }
 
     public function create($requester, $title, $body, $tags, $team_id = null){
-        (new Client())->request("POST", static::$url . "/tickets", [
+        $response = (new Client())->request("POST", static::$url . "/tickets", [
             "headers" => ["token" => static::$apiToken],
             "form_params" => [
                 "requester" => $requester,
@@ -39,13 +39,18 @@ class Ticket extends Handesk {
                 "team_id"   => $team_id,
             ]
         ]);
+        return json_decode($response->getBody())->data->id;
     }
 
-    public function get($requester, $status){
-        $response = (new Client())->request("GET", static::$url . "/tickets?requester={$requester}&status={$status}", ["headers" => ["token" => static::$apiToken]] );
-        return array_map(function($attributes){
-            return new Ticket($attributes);
-        }, json_decode($response->getBody(),true)["data"]);
+    public function get($requester, $status = 'open'){
+        try {
+            $response = (new Client())->request("GET", static::$url . "/tickets?requester={$requester}&status={$status}", ["headers" => ["token" => static::$apiToken]]);
+            return array_map(function ($attributes) {
+                return new Ticket($attributes);
+            }, json_decode($response->getBody(), true)["data"]);
+        }catch(\Exception $e){
+            return [];
+        }
     }
 
     public function find($id){
