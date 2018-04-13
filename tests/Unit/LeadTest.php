@@ -10,7 +10,7 @@ class LeadTest extends BaseTestCase{
 
     /** @test */
     public function can_create_a_lead(){
-        Handesk::setup("http://handesk.dev/api",'the-api-token');
+        Handesk::setup("http://handesk.test/api",'the-api-token');
 
         $id = (new Lead)->create([
             "email"       => "bruce@wayne.com",

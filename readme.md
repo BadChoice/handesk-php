@@ -41,6 +41,17 @@ Adding comments to tickets
 $ticket->addComment("Adding a comment");
 $ticket->addComment("Adding a comment and solving the ticket", true);
 ```
+
+##### Teams
+```
+    (new Team(2))->tickets();           //gets all open tickets for team with id 2
+    (new Team(2))->tickets('solved');   //gets all solved tickets for team with id 2
+    (new Team(2))->ticketsCount();      //gets the count of all open tickets for team with id 2
+    (new Team(2))->ticketsCount('closed'); //gets the count of all closed tickets for team with id 2
+```
+
+
+
 ##### Leads
 
 To create a lead simply call:

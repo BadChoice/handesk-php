@@ -2,7 +2,6 @@
 
 namespace BadChoice\Handesk;
 
-
 use GuzzleHttp\Client;
 
 class Ticket extends Handesk {

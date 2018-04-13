@@ -11,7 +11,7 @@ class TicketTest extends BaseTestCase{
 
     /** @test */
     public function getting_ticket_for_unexisting_requester_returns_empty_list(){
-        Handesk::setup("http://handesk.dev/api",'the-api-token');
+        Handesk::setup("http://handesk.test/api",'the-api-token');
 
         $tickets = (new Ticket)->get('non-existing-requester');
 
@@ -20,7 +20,7 @@ class TicketTest extends BaseTestCase{
 
     /** @test */
     public function can_get_tickets_from_requester_with_name(){
-        Handesk::setup("http://handesk.dev/api",'the-api-token');
+        Handesk::setup("http://handesk.test/api",'the-api-token');
 
         $tickets = (new Ticket)->get('Bruce Wayne');
 
@@ -29,7 +29,7 @@ class TicketTest extends BaseTestCase{
 
     /** @test */
     public function can_get_tickets_from_requester_with_email(){
-        Handesk::setup("http://handesk.dev/api",'the-api-token');
+        Handesk::setup("http://handesk.test/api",'the-api-token');
 
         $tickets = (new Ticket)->get('bruce@wayne.com');
 
@@ -62,4 +62,6 @@ class TicketTest extends BaseTestCase{
         $this->assertCount(3, $ticket->comments);
         $this->assertEquals(Ticket::STATUS_SOLVED,         $ticket->status);
     }
+
+
 }

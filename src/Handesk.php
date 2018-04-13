@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class Handesk{
 
-    public static $url      = "http://handesk.dev/api";
+    public static $url      = "http://handesk.test/api";
     public static $apiToken = 'the-api-token';
 
     protected $attributes   = [];
