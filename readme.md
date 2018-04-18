@@ -44,6 +44,7 @@ $ticket->addComment("Adding a comment and solving the ticket", true);
 
 ##### Teams
 ```
+    $team = Team::create("team name", "team email";
     (new Team(2))->tickets();           //gets all open tickets for team with id 2
     (new Team(2))->tickets('solved');   //gets all solved tickets for team with id 2
     (new Team(2))->ticketsCount();      //gets the count of all open tickets for team with id 2
