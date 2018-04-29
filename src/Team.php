@@ -47,4 +47,26 @@ class Team extends Handesk {
             return 0;
         }
     }
+
+    public function leads()
+    {
+        try {
+            $response = (new Client())->request("GET", static::$url . "/teams/{$this->id}/leads", ["headers" => ["token" => static::$apiToken]]);
+            return array_map(function ($attributes) {
+                return new Lead($attributes);
+            }, json_decode($response->getBody(), true)["data"]);
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
+    public function leadsCount()
+    {
+        try {
+            $response = (new Client())->request("GET", static::$url . "/teams/{$this->id}/leads?count=true", ["headers" => ["token" => static::$apiToken]]);
+            return json_decode($response->getBody(), true)["data"]["count"];
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
 }
