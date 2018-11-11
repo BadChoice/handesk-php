@@ -16,7 +16,7 @@ To initialize the Handesk-php sdk you simply need to call to
 Handesk::setup('your-handesk-url', 'your-handesk-api-token');
 ```
 
-If you use laravel you can use the `config.services` file and do it like this 
+If you use laravel you can use the `config/services.php` file and do it like this 
 
 ```php
 // In AppServiceProvider boot method
@@ -25,9 +25,9 @@ Handesk::setup(config('services.handesk.url'), config('services.handesk.token'))
 
 ```php
     //In config.services.php file
-    "handesk" => [
-        "url"   => env('HANDESK_URL', "http://handesk.dev/api"),
-        "token" => env("HANDESK_TOKEN", "the-api-token")
+    'handesk' => [
+        'url'   => env('HANDESK_URL', 'http://handesk.dev/api'),
+        'token' => env('HANDESK_TOKEN', 'the-api-token')
     ],
 ```
 
