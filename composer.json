@@ -3,8 +3,8 @@
     "description": "Handesk PHP sdk",
     "type": "library",
     "require": {
-        "nesbot/carbon": "~2.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "nesbot/carbon": "^2.0.0",
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7",
