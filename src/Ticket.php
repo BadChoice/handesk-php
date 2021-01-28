@@ -77,4 +77,16 @@ class Ticket extends Handesk {
         }
     }
 
+    public function findEncryptedId($id){
+        return $this->find($this->getDecryptedId($id));
+    }
+
+    public function getDecryptedId($id) {
+        return decrypt($id);
+    }
+
+    public function getEncryptedId() {
+        return encrypt($this->id); 
+    }
+    
 }
