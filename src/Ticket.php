@@ -3,6 +3,7 @@
 namespace BadChoice\Handesk;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\App;
 
 class Ticket extends Handesk {
     const STATUS_NEW                = 1;
@@ -57,14 +58,17 @@ class Ticket extends Handesk {
         return new Ticket( json_decode($response->getBody(),true)["data"] );
     }
 
-    public function addComment($comment, $solved = false){
+    public function addComment($requester, $comment, $solved = false, $language = 'en'){
         $response = (new Client())->request("POST", static::$url . "/tickets/{$this->id}/comments",[
             "headers" => ["token" => static::$apiToken],
             "form_params" => [
+                "requester"     => $requester,
                 "body"          => $comment,
                 "new_status"    => $solved ? static::STATUS_SOLVED : null,
+                "language"      => $language,
             ]
         ]);
+        return json_decode($response->getBody());
     }
 
     public function statusName(){
