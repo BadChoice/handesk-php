@@ -2,7 +2,7 @@
 
 namespace BadChoice\Handesk;
 
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class Ticket extends Handesk {
     const STATUS_NEW                = 1;
@@ -28,43 +28,50 @@ class Ticket extends Handesk {
     }
 
     public function create($requester, $title, $body, $tags, $team_id = null){
-        $response = (new Client())->request("POST", static::$url . "/tickets", [
-            "headers" => ["token" => static::$apiToken],
-            "form_params" => [
-                "requester" => $requester,
-                "title"     => $title,
-                "body"      => $body,
-                "tags"      => $tags,
-                "team_id"   => $team_id,
-            ]
+        $response = Http::withHeaders([
+            "token" => static::$apiToken
+        ])->post(static::$url . "/tickets", [
+            "requester" => $requester,
+            "title"     => $title,
+            "body"      => $body,
+            "tags"      => $tags,
+            "team_id"   => $team_id,
         ]);
-        return json_decode($response->getBody())->data->id;
+
+        return json_decode($response->body())->data->id;
     }
 
     public function get($requester, $status = 'open'){
         try {
-            $response = (new Client())->request("GET", static::$url . "/tickets?requester={$requester}&status={$status}", ["headers" => ["token" => static::$apiToken]]);
+            $response = Http::withHeaders([
+                "token" => static::$apiToken
+            ])->get(static::$url . "/tickets?requester={$requester}&status={$status}");
             return array_map(function ($attributes) {
                 return new Ticket($attributes);
-            }, json_decode($response->getBody(), true)["data"]);
+            }, $response["data"]);
         }catch(\Exception $e){
             return [];
         }
     }
 
     public function find($id){
-        $response = (new Client())->request("GET", static::$url . "/tickets/{$id}", ["headers" => ["token" => static::$apiToken]] );
-        return new Ticket( json_decode($response->getBody(),true)["data"] );
+        $response = Http::withHeaders([
+            "token" => static::$apiToken
+        ])->get(static::$url . "/tickets/{$id}");
+        return new Ticket( $response["data"] );
     }
 
-    public function addComment($comment, $solved = false){
-        $response = (new Client())->request("POST", static::$url . "/tickets/{$this->id}/comments",[
-            "headers" => ["token" => static::$apiToken],
-            "form_params" => [
-                "body"          => $comment,
-                "new_status"    => $solved ? static::STATUS_SOLVED : null,
-            ]
+    public function addComment($requester, $comment, $solved = false, $language = 'en'){
+        $response = Http::withHeaders([
+            "token" => static::$apiToken
+        ])->post(static::$url . "/tickets/{$this->id}/comments",[
+            "requester"     => $requester,
+            "body"          => $comment,
+            "new_status"    => $solved ? static::STATUS_SOLVED : null,
+            "language"      => $language,
         ]);
+
+        return $response;
     }
 
     public function statusName(){
